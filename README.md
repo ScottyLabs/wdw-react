@@ -10,18 +10,18 @@ This repository contains the completed result. As we go through the lab, we will
 
 ## Table of contents
 
-1. [Setup Instructions](#setup-instructions)
-2. [Creating your React project](#creating-your-react-project)
-3. [Planning our project](#planning-our-project)
-4. [Let's Begin](#lets-begin)
-  a. [Importing a component Library](#importing-a-component-library)
-  b. [Creating a component](#creating-a-component)
-5. [Querying the API (backend)](#querying-the-api-backend)
-  a. [How do we query the backend?](#how-do-we-query-the-backend)
-  b. [Storing the data](#storing-the-data)
-6. [Button to Retrieve New Data](#button-to-retrieve-new-data)
-7. [Clean Up](#clean-up)
-8. [Things to explore](#things-to-explore)
+> 1. [Setup Instructions](#setup-instructions)
+> 2. [Creating your React project](#creating-your-react-project)
+> 3. [Planning our project](#planning-our-project)
+> 4. [Let's Begin](#lets-begin)
+>     1. [Importing a component Library](#importing-a-component-library)
+>     2. [Creating a component](#creating-a-component)
+> 5. [Querying the API (backend)](#querying-the-api-backend)
+>     1. [How do we query the backend?](#how-do-we-query-the-backend)
+>     2. [Storing the data](#storing-the-data)
+> 6. [Button to Retrieve New Data](#button-to-retrieve-new-data)
+> 7. [Clean Up](#clean-up)
+> 8. [Things to explore](#things-to-explore)
 
 ## Setup Instructions
 
