@@ -10,14 +10,18 @@ This repository contains the completed result. As we go through the lab, we will
 
 ## Table of contents
 
-1. [Setup Instructions](#setup-instructions)
-2. [Creating your React project](#creating-your-react-project)
-3. [Planning our project](#planning-our-project)
-4. [Let's Begin](#lets-begin)
-5. [Querying the API (backend)](#querying-the-api-backend)
-6. [Button to Retrieve New Data](#button-to-retrieve-new-data)
-7. [Clean Up](#clean-up)
-8. [Things to explore](#things-to-explore)
+> 1. [Setup Instructions](#setup-instructions)
+> 2. [Creating your React project](#creating-your-react-project)
+> 3. [Planning our project](#planning-our-project)
+> 4. [Let's Begin](#lets-begin)
+>   a. [Importing a component Library](#importing-a-component-library)
+>   b. [Creating a component](#creating-a-component)
+> 5. [Querying the API (backend)](#querying-the-api-backend)
+>   a. [How do we query the backend?](#how-do-we-query-the-backend)
+>   b. [Storing the data](#storing-the-data)
+> 6. [Button to Retrieve New Data](#button-to-retrieve-new-data)
+> 7. [Clean Up](#clean-up)
+> 8. [Things to explore](#things-to-explore)
 
 ## Setup Instructions
 
@@ -109,6 +113,9 @@ function App()  {
 
 export default App;
 ```
+
+#### Importing a component library
+
 Let us now build the layout with Semantic UI. First, we need to install it via NPM (node package manager).
 ```
 $ npm install semantic-ui-react semantic-ui-css
@@ -196,6 +203,8 @@ Great! It should look something like this:
 
 We have two rows of cards which all say 1.
 
+#### Creating a component
+
 Now let's make this into a component which will take in a specific number and create a grid with that number of cards. Create a new file `./src/components/CreateGrid.js`. Now that we are creating a new file, we can follow a general template:
 
 ```jsx
@@ -212,79 +221,73 @@ Let us find a general pattern: every row of cards contains 5 cards. The creation
 
 > More info in the [React Docs](https://reactjs.org/docs/jsx-in-depth.html#jsx-children).
 
-Thought about it? Okay so here is *one* solution (there are many possible ones):
+Thought about it?
+
+<details>
+  <summary>Spoiler warning: Okay so here is <i>one</i> solution (there are many possible ones):</summary>
+  
+  ```jsx
+  import React from 'react';
+  import { Grid, Segment } from 'semantic-ui-react';
+
+  const CreateGrid = (props) => {
+    const segment = (
+      <Grid.Column>
+        <Segment>1</Segment>
+      </Grid.Column>
+    );
+
+    const count = props.count || 0; // For safety
+    
+    const rows = Math.ceil(count / 5);
+    const lastRowCount = count % 5 || 5; // If 0, use 5 instead
+
+    // First n-1 rows
+    const result = [];
+    for (var i = 1; i < rows; i++) {
+      const innerRow = [];
+      for (var j = 0; j < 5; j++) {
+        innerRow.push(segment);
+      }
+      const row = (
+        <Grid.Row>
+          {innerRow}
+        </Grid.Row>
+      );
+      result.push(row);
+    }
+
+    if (rows !== 0) {
+      // Last row
+      const innerRow = [];
+      for (var k = 0; k < lastRowCount; k++) {
+        innerRow.push(segment);
+      }
+      const row = (
+        <Grid.Row>
+          {innerRow}
+        </Grid.Row>
+      );
+      result.push(row);
+    }
+
+    return result;
+  };
+
+  export default CreateGrid;
+  ```
+</details><br />
+
+Now, let's modify our `App.js` to use this instead. First, import the component and place it in the JSX expression.
 
 ```jsx
-import React from 'react';
-import { Grid, Segment } from 'semantic-ui-react';
-
-const CreateGrid = (props) => {
-  const segment = (
-    <Grid.Column>
-      <Segment>1</Segment>
-    </Grid.Column>
-  );
-
-  const count = props.count || 0; // For safety
-  
-  const rows = Math.ceil(count / 5);
-  const lastRowCount = count % 5 || 5; // If 0, use 5 instead
-
-  // First n-1 rows
-  const result = [];
-  for (var i = 1; i < rows; i++) {
-    const innerRow = [];
-    for (var j = 0; j < 5; j++) {
-      innerRow.push(segment);
-    }
-    const row = (
-      <Grid.Row>
-        {innerRow}
-      </Grid.Row>
-    );
-    result.push(row);
-  }
-
-  if (rows !== 0) {
-    // Last row
-    const innerRow = [];
-    for (var k = 0; k < lastRowCount; k++) {
-      innerRow.push(segment);
-    }
-    const row = (
-      <Grid.Row>
-        {innerRow}
-      </Grid.Row>
-    );
-    result.push(row);
-  }
-
-  return result;
-};
-
-export default CreateGrid;
+import CreateGrid from './components/CreateGrid';
 ```
 
-Now, let's change our `App.js` to use this instead.
+and
 
 ```jsx
-import React from  'react';
-import { Container, Grid, Header, Segment } from 'semantic-ui-react';
-import CreateGrid from './components/CreateGrid';
-
-function  App()  {
-  
-  return (
-    <Container>
-      <Header as='h2'>Welcome to my site!</Header>
-      <Grid columns={5}>
-        <CreateGrid count={12} />
-      </Grid>
-    </Container>
-  );
-}
-
-export default App;
+<CreateGrid count={12} />
 ```
 
 We're going to use this later once we have the data. :-)
@@ -293,7 +296,7 @@ This is what you just built!
 
 ![Render twelve segments on a grid](./screenshots/Twelve.png)
 
-Feel free to play around with the components with React Dev Tools. (Inspect Element > >> button (top bar) > Components)
+Feel free to play around with the components with React Dev Tools. (Inspect Element > >> button (top bar) > ⚛ Components)
 
 Still with me? You're doing great!
 
@@ -308,6 +311,7 @@ You do not need to understand how the API backend works. Only that it takes in t
 * day (0-6, with 0 - Sunday, 6 - Saturday)
 * hour (in 24 hour notation)
 * min
+
 and it returns an array with the following schema:
 
 ```json
@@ -341,56 +345,35 @@ and it returns an array with the following schema:
 > JSON is perfect for JavaScript because it stands for JavaScript Object Notation.
 > In fact, when assigned to a variable in JS, it is parsed as an object!
 
-How do we query the backend? This is where NPM packages come in. We can use code
-that other developers have already written for us. Here, we use axios to handle
-our requests.
+#### How do we query the backend?
+
+This is where NPM packages come in. We can use code that other developers have already written for us. Here, we use axios to handle our requests.
 
 ```
 $ npm install axios
 ```
-Now, where do we call our request function in React? Note that React is rendered
-in the browser, so there isn't really any procedural way of calling a function
-without rerendering the page.
+Now, where do we call our request function in React? Note that React is rendered in the browser, so there isn't really any procedural way of calling a function without rerendering the page.
 
 Unless we take advantage of a page render to call our functions. Lifecycle methods!
 
-We import both axios and the `useEffect` hook in our `App.js` file so that we can use them in our
-`App` component.
+We import both `axios` and the `useEffect` hook in our `App.js` file so that we can use them in our `App` component.
 
 ```jsx
 import React, { useEffect } from  'react';
 import { Container, Grid, Header, Segment } from 'semantic-ui-react';
 import CreateGrid from './components/CreateGrid';
 import axios from 'axios';
-
-function  App()  {
-
-  return (
-    <Container>
-      <Header as='h2'>Welcome to my site!</Header>
-      <Grid columns={5}>
-        <CreateGrid count={12} />
-      </Grid>
-    </Container>
-  );
-}
-
-export default App;
 ```
 
-Now let's make a function inside `App` that allows you to query the API. Here is
-an example which allows us to log the value of the response to the console. The
-function is also called by `useEffect`.
+Now let's make a function inside `App` that allows you to query the API. Here is an example which allows us to log the value of the response to the console. The function is also called by `useEffect`.
 
-A little explanation on how the `useEffect` works. The `useEffect` function takes
-in 1 or 2 arguments. The first argument is always a function that is called when
-the `useEffect` is called. The second argument is optional but is an array when it is provided. When
-only 1 argument is passed, the function is **always** called when something
-changes, e.g. state, props, rerender, etc. When two arguments are passed, the
-function is only called when the values of the array contents changes.
+A little explanation on how the `useEffect` works. The `useEffect` function takes in 1 or 2 arguments. The first argument is always a function that is called when the `useEffect` is called. The second argument is optional but is an array when it is provided. When only 1 argument is passed, the function is **always** called when something changes, e.g. state, props, rerender, etc. When two arguments are passed, the function is only called when the values of the array contents changes.
 
-We can set `useEffect` to only call once (when the page renders) by specifying
-an empty array as the second argument as shown in the example below.
+```javascript
+useEffect(functionToCall, [checkIfIChange, checkIfIChangeToo]);
+```
+
+We can set `useEffect` to only call once (when the page renders) by specifying an empty array as the second argument as shown in the example below. (An empty array never changes!)
 
 > To learn more about hooks, you may visit the [React Docs](https://reactjs.org/docs/hooks-intro.html).
 
@@ -411,28 +394,23 @@ function App()  {
 
   useEffect(retrieveData, []);
 
-  return (
-    <Container>
-      <Header as='h2'>Welcome to my site!</Header>
-      <Grid columns={5}>
-        <CreateGrid count={12} />
-      </Grid>
-    </Container>
-  );
+  // ...
 }
 ```
 
-What if I want to use the data instead of putting it in the web browser's console?
-That's what state is for!
+#### Storing the data
 
-> *Why use state when we can declare variables?*
-> Every time the component is rendered, all variables are redeclared. The only
+What if I want to use the data instead of putting it in the web browser's console? That's what state is for!
+
+> **Why use state when we can declare local variables?**
+> Every time the component is rendered, all variables are reassigned. The only
 > variable with persistent state is, well, a state variable.
 
-We can declare a state variable with the `useState` hook. This function returns
-an array with exactly two elements. The first is always the variable where we
-can access the state's value. The second is always the function that sets the
-value of the state.
+We can declare a state variable with the `useState` hook. It takes in an argument which is set as the initial value of the state. The return value is an array with exactly two elements. The first is always the variable where we can access the state's value. The second is always the function that sets the value of the state.
+
+```javascript
+const [name, setName] = useState('John'); // Sets initial value of name to John
+```
 
 Like before, we must also import the `useState` hook.
 
@@ -483,9 +461,6 @@ some things around so we can set the values properly. Take note of count and
 segment.
 
 ```jsx
-import React from 'react';
-import { Grid, Segment } from 'semantic-ui-react';
-
 const CreateGrid = (props) => {
   let count;
 
@@ -548,17 +523,22 @@ const CreateGrid = (props) => {
 
   return result;
 };
-
-export default CreateGrid;
 ```
 
 It works!! The dining locations are now visible there. You should at least
 see "STEPHANIE'S - MARKET C" (open 24 hours) in the list.
 
+> Beware of infinite loops! A `useEffect` that checks for changes in a state variable that it has mutated inside the function call will cause an infinite loop.
+> ```javascript
+> useEffect(() => {
+>   setData({}) // Called function causes a re-render (state was changed).
+> }, [data]); // Checks if this has changed since render. (Yes, so call function)
+> ```
+> Remember that if you do not specify an array (no second argument), `useEffect` checks for all changes.
+
 ## Button to Retrieve New Data
 
-This is much simpler than what we have already done. We can import a `Button` component
-from Semantic UI and set it's `onClick` event handler to call `retrieveData`.
+This is much simpler than what we have already done. We can import a `Button` component from Semantic UI and set its `onClick` event handler to call `retrieveData`.
 
 > For more about events, you may visit the [React Docs](https://reactjs.org/docs/handling-events.html).
 
@@ -628,14 +608,11 @@ function App()  {
 export default App;
 ```
 
-Yes. I added a lot of stuff so let me explain. Take note of the `<Button>` tags
-in the returned JSX expression. I set the `onClick` event handler to the
-`retrieveData` function which we already wrote earlier.
+Yes. I added a lot of stuff, so let me explain. Take note of the `<Button>` tags in the returned JSX expression. I set the `onClick` event handler to call the `retrieveData` function which we already wrote earlier.
 
-I also added a line of text that indicates what time the data was refreshed.
-This time is stored in a state variable as `updated`. In addition, I also wrote another
-function that takes the `updated` state variable and converts it into a human
-readable time format.
+I also added a line of text that indicates what time the data was refreshed. This time is stored in a state variable as `updated`.
+
+In addition, I wrote another function that takes the `updated` state variable and converts it into a human-readable time format.
 
 It looks like this now:
 
