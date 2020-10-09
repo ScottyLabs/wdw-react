@@ -8,6 +8,17 @@ We will be creating a small web application that will display all open dining lo
 
 This repository contains the completed result. As we go through the lab, we will be starting from scratch, so you do not need to clone this repository.
 
+## Table of contents
+
+1. [Setup Instructions](#setup-instructions)
+2. [Creating your React project](#creating-your-react-project)
+3. [Planning our project](#planning-our-project)
+4. [Let's Begin](#lets-begin)
+5. [Querying the API (backend)](#querying-the-api-backend)
+6. [Button to Retrieve New Data](#button-to-retrieve-new-data)
+7. [Clean Up](#clean-up)
+8. [Things to explore](#things-to-explore)
+
 ## Setup Instructions
 
 If you have already completed this step, skip to the next section.
@@ -199,6 +210,8 @@ export default CreateGrid;
 
 Let us find a general pattern: every row of cards contains 5 cards. The creation of these rows is predictable. Try to think of how to go about this algorithmically. HINT: React can render an array of JSX expressions and also to add to the end of an array, we do `array.push(element)`.
 
+> More info in the [React Docs](https://reactjs.org/docs/jsx-in-depth.html#jsx-children).
+
 Thought about it? Okay so here is *one* solution (there are many possible ones):
 
 ```jsx
@@ -289,7 +302,7 @@ Still with me? You're doing great!
 Now, we're ready for the data! Since we want to know what dining locations are
 open at any given time, we specifically need the `https://apis.scottylabs.org/dining/location/time/{day}/{hour}/{min}` endpoint.
 
-You can explore the Dining API at the [ScottyLabs API Website](https://apis.scottylabs.org/)
+> You can explore the Dining API at the [ScottyLabs API Website](https://apis.scottylabs.org/)
 
 You do not need to understand how the API backend works. Only that it takes in three parameters:
 * day (0-6, with 0 - Sunday, 6 - Saturday)
@@ -325,6 +338,8 @@ and it returns an array with the following schema:
   }
 ]
 ```
+> JSON is perfect for JavaScript because it stands for JavaScript Object Notation.
+> In fact, when assigned to a variable in JS, it is parsed as an object!
 
 How do we query the backend? This is where NPM packages come in. We can use code
 that other developers have already written for us. Here, we use axios to handle
