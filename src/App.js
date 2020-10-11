@@ -45,8 +45,6 @@ function App()  {
       minuteString = minutes;
     }
 
-    console.log(updated.getMonth(), updated.getDay())
-
     return `${month}/${day}/${year} at ${hour}:${minuteString} ${period}`;
   }
 
