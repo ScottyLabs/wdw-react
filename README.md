@@ -581,7 +581,7 @@ function App()  {
       period = 'PM';
     }
 
-    if (hour == 0) {
+    if (hour === 0) {
       hour = 12;
     }
 
