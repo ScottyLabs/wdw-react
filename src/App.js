@@ -9,7 +9,6 @@ function App()  {
 
   const retrieveData = () => {
     const date = new Date(Date.now());
-    date.setHours(10);
     const day = date.getDay();
     const hours = date.getHours();
     const mins = date.getMinutes();
@@ -23,8 +22,8 @@ function App()  {
   };
 
   const timeString = (date) => {
-    const day = date.getDay();
-    const month = date.getMonth();
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
     const year = date.getFullYear();
     let hour = date.getHours();
     const minutes = date.getMinutes();
@@ -45,6 +44,8 @@ function App()  {
     } else {
       minuteString = minutes;
     }
+
+    console.log(updated.getMonth(), updated.getDay())
 
     return `${month}/${day}/${year} at ${hour}:${minuteString} ${period}`;
   }
